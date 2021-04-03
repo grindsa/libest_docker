@@ -1,0 +1,19 @@
+name: Push images to dockerhub and ghcr.io
+
+on:
+  push:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 2 * * 6'
+
+jobs:
+  build_and_upload_images_to_hub:
+    name: Push images to dockerhub and github
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: "Create images"
+        run: |
+          cat Docker/estclient/Dockerfile | docker build -t grindsa/estclient -t ghcr.io/grindsa/estclient - .  --no-cache
