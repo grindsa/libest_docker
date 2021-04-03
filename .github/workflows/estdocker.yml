@@ -16,4 +16,4 @@ jobs:
 
       - name: "Create images"
         run: |
-          cat Docker/estclient/Dockerfile | docker build -t grindsa/estclient -t ghcr.io/grindsa/estclient - .  --no-cache
+          cat Docker/estclient/Dockerfile | docker build -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
