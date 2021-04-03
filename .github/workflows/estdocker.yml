@@ -16,7 +16,7 @@ jobs:
 
       - name: "Create images"
         run: |
-          cat Docker/estclient/Dockerfile | docker build -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
+          cat Docker/estclient/Dockerfile | docker build -t 3.2.0 -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
 
       - name: "upload images to hub.docker.com"
         run: |
@@ -26,4 +26,4 @@ jobs:
       - name: "upload images to ghcr.io"
         run: |
           docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
-          docker push -a ghcr.io/grindsa/estclient          
+          docker push -a ghcr.io/grindsa/estclient
