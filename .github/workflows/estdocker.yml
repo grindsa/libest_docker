@@ -1,4 +1,4 @@
-name: Push images to dockerhub and ghcr.io
+name: create estclient image and push it dockerhub and ghcr.io
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_and_upload_images_to_hub:
-    name: Push images to dockerhub and github
+    name: create estclient image and push it dockerhub and ghcr.io
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,7 +16,7 @@ jobs:
 
       - name: "Create images"
         run: |
-          cat Docker/estclient/Dockerfile | docker build -t 3.2.0 -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
+          cat Docker/estclient/Dockerfile | docker build -t 1.1.0 -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
 
       - name: "upload images to hub.docker.com"
         run: |
