@@ -22,20 +22,20 @@ jobs:
 
       - name: "[ Prepare ] install globalsign/estclient"
         run: |
-          export GOPATH=/usr/local/go
-          go get github.com/globalsign/est 
+          pwd
+          go get github.com/globalsign/est
           go get -u github.com/globalsign/est/cmd/estclient
 
-      - name: "Create images"
-        run: |
-          cat Docker/estclient/Dockerfile | docker build -t 3.2.0 -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
+      #- name: "Create images"
+      #  run: |
+      #    cat Docker/estclient/Dockerfile | docker build -t 3.2.0 -t grindsa/estclient -t ghcr.io/grindsa/estclient -f - .  --no-cache
 
-      - name: "upload images to hub.docker.com"
-        run: |
-          docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push -a grindsa/estclient
+      #- name: "upload images to hub.docker.com"
+      #  run: |
+      #    docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      #    docker push -a grindsa/estclient
 
-      - name: "upload images to ghcr.io"
-        run: |
-          docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
-          docker push -a ghcr.io/grindsa/estclient
+      #- name: "upload images to ghcr.io"
+      #  run: |
+      #    docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
+      #    docker push -a ghcr.io/grindsa/estclient
