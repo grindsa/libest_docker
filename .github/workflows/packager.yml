@@ -1,0 +1,52 @@
+name: Package estclient
+
+on:
+  push:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 1 * * 6'
+
+jobs:
+  packager_dpkg:
+    name: Package estclient
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: "[ Prepare ] install missing packages"
+      run: |
+        sudo apt-get update
+        sudo FRONTEND="noninteractive" apt-get -y install tzdata
+        sudo apt-get install -y curl build-essential checkinstall libssl-dev git
+
+    - name: "[ Prepare ] clone cisco/libest"
+      run: |
+        git clone https://github.com/cisco/libest.git /tmp/libest
+
+    - name: "[ Build ] libest "
+      run: |
+        old_path=$(pwd)
+        echo $old_path
+        cd /tmp/libest
+        sudo ./configure --disable-safec
+        sudo checkinstall --install=no --pkgname=estclient  --pkgversion=3.2.0 --maintainer grindelsack@gmail.com  --pakdir $old_path/deb -y
+
+    - name: "[ Git ] check for changes"
+      run: git status
+
+    - name: "[ Git ] stage changed files"
+      run: |
+        git add .
+        git config --global user.email "grindelsack@gmail.com"
+        git config --global user.name "GrindSA [BOT]"
+
+    - name: "[ Git ] commit changed files"
+      run: git commit -m "[BOT] Auto update"
+
+    - name: "[ Git ] fetch from main"
+      run: git fetch origin main
+
+    - name: "[ Git ] push code to main"
+      run: git push origin HEAD:main
